@@ -38,14 +38,10 @@ def fit_text_classifier_model():
     model.fit(X_train, y_train)
 
     predict = model.best_estimator_.predict(X_test)
-    predict_proba = model.best_estimator_.predict_proba(X_test)
 
-    rate, _ = optimal_threshold(predict_proba[:, 1])
-
-    print(rate)
-    print(classification_report(y_test, list(map(lambda x: 1 if x > rate else 0, predict_proba[:, 1]))))
-    print("accuracy: ", accuracy_score(y_test, list(map(lambda x: 1 if x > rate else 0, predict_proba[:, 1]))))
-    print(confusion_matrix(y_test, list(map(lambda x: 1 if x > rate else 0, predict_proba[:, 1]))))
+    print(classification_report(y_test, predict))
+    print("accuracy: ", accuracy_score(y_test, predict))
+    print(confusion_matrix(y_test, predict))
 
     # Save model
     dump(model, os.path.join(DATA_PATH, "model.joblib"))
@@ -53,10 +49,8 @@ def fit_text_classifier_model():
     # Save metrics
     with open(os.path.join(DATA_PATH, 'metrics.txt'), 'w') as record_file:
         record_file.write(
-            str(classification_report(y_test, list(map(lambda x: 1 if x > rate else 0, predict_proba[:, 1]))) + '\n')
+            str(classification_report(y_test, predict) + '\n')
         )
         record_file.write(
-            str(confusion_matrix(y_test, list(map(lambda x: 1 if x > rate else 0, predict_proba[:, 1]))))
+            str(confusion_matrix(y_test, predict))
         )
-    with open(os.path.join(DATA_PATH, 'optimal_rate.txt'), 'w') as optimal_rate:
-        optimal_rate.write(str(rate))

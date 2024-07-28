@@ -12,13 +12,10 @@ def classify_text(text):
 
     model = load(os.path.join(DATA_PATH, "model.joblib"))
 
-    with open(os.path.join(DATA_PATH, 'optimal_rate.txt')) as rate:
-        optimal_rate = float(rate.read())
-
     vectorised_text = get_vector_from_sentence(pd.Series([processed_text(text)]))
 
-    predict = 1 if model.predict_proba(vectorised_text)[:, 1] >= optimal_rate else 0
+    predict = model.predict(vectorised_text)
 
-    classification = class_to_name[predict]
+    classification = class_to_name[predict[0]]
 
     return classification
