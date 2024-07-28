@@ -6,7 +6,6 @@ from joblib import dump
 import os
 
 from source.text_processing import processed_text, get_vector_from_sentence
-from source.optimal_threshold import optimal_threshold
 
 from config import XGB_PARAMS, DATA_PATH
 
