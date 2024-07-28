@@ -7,7 +7,7 @@ import os
 
 from source.text_processing import processed_text, get_vector_from_sentence
 
-from config import XGB_PARAMS, DATA_PATH
+from config import XGB_PARAMS, DATA_PATH, CLASSES
 
 
 def fit_text_classifier_model():
@@ -21,7 +21,10 @@ def fit_text_classifier_model():
         vectors_df[vectors_df.columns[:300]], data_set.loc[vectors_df.index]['class'], test_size=0.2, random_state=42
     )
 
-    xgb_model = xgb.XGBClassifier(objective="binary:logistic", random_state=42)
+    xgb_model = xgb.XGBClassifier(
+        objective="binary:logistic" if len(CLASSES) <= 2 else "multi:softmax",
+        random_state=42
+    )
 
     kfold = StratifiedKFold(n_splits=5, random_state=42, shuffle=True)
 
