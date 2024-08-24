@@ -17,10 +17,6 @@ def download_news():
             data_set["text"] += [new.title]
             data_set["class"] += [new.topic]
 
-    # Limit
-    if len(data_set) >= 5000:
-        break
-
     data_set = pd.DataFrame(data_set)
 
     data_set["class"] = data_set["class"].map(CLASSES)
