@@ -10,17 +10,16 @@ def download_news():
     records = load_lenta(NEWS_PATH)
 
     data_set = {"text": [], "class": []}
-
-    count = 0
+    
     for new in records:
 
         if new.topic in CLASSES.keys():
             data_set["text"] += [new.title]
             data_set["class"] += [new.topic]
 
-        count += 1
-        if count > 50000:
-            break
+    # Limit
+    if len(data_set) >= 5000:
+        break
 
     data_set = pd.DataFrame(data_set)
 
